@@ -28,10 +28,20 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudents() {
-        if (!this.studentService.findAllStudents().isEmpty()) {
+        Collection<Student> students = studentService.findAllStudents();
+        if (students.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(this.studentService.findAllStudents());
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam("age") int age) {
+        Collection<Student> students = studentService.findStudentsByAge(age);
+        if (students.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(students);
     }
 
     @PostMapping
@@ -48,11 +58,7 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable("id") Long id) {
-        if (studentService.findStudentById(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public void deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
     }
 }

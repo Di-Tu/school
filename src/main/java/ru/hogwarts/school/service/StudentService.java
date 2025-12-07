@@ -14,7 +14,8 @@ public class StudentService {
 
     public Student createStudent(Student student) {
         student.setId(++lastId);
-        return students.put(student.getId(), student);
+        students.put(student.getId(), student);
+        return student;
     }
 
     public Student findStudentById(Long id) {
@@ -24,7 +25,7 @@ public class StudentService {
         return null;
     }
 
-    public Collection<Student> findStudentByAge(int age) {
+    public Collection<Student> findStudentsByAge(int age) {
         return students.values().stream()
                 .filter(student -> student.getAge() == age)
                 .collect(Collectors.toList());
@@ -41,10 +42,7 @@ public class StudentService {
         return null;
     }
 
-    public Student deleteStudent(Long id) {
-        if (students.containsKey(id)) {
-            return students.remove(id);
-        }
-        return null;
+    public void deleteStudent(Long id) {
+        students.remove(id);
     }
 }

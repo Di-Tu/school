@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -8,7 +9,7 @@ import ru.hogwarts.school.service.FacultyService;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("faculty")
+@RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -34,8 +35,8 @@ public class FacultyController {
         return ResponseEntity.ok(faculties);
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<Collection<Faculty>> getFacultyByColor(@RequestParam("color") String color) {
+    @GetMapping(params = "color")
+    public ResponseEntity<Collection<Faculty>> getFacultyByColor(@RequestParam(required = false) String color) {
         Collection<Faculty> faculties = facultyService.findFacultyByColor(color);
         if (faculties.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -51,7 +52,7 @@ public class FacultyController {
     @PutMapping
     public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
         if (facultyService.findFacultyById(faculty.getId()) == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(facultyService.updateFaculty(faculty));
     }

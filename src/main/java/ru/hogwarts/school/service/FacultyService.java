@@ -43,6 +43,6 @@ public class FacultyService {
     }
 
     public void deleteFaculty(Long id) {
-        faculties.remove(id);
+         faculties.remove(id);
     }
 }

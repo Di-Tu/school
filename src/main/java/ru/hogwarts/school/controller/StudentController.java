@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     @GetMapping(params = "age")
-    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam(required = false) int age) {
+    public ResponseEntity<Collection<Student>> getStudentsByAge(@RequestParam int age) {
         Collection<Student> students = studentService.findStudentsByAge(age);
         if (students.isEmpty()) {
             return ResponseEntity.noContent().build();
